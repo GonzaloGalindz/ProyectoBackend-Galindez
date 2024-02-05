@@ -3,6 +3,19 @@ class ProductManager {
     this.products = [];
   }
 
+  getProducts() {
+    return this.products;
+  }
+
+  getProductById(id) {
+    const product = this.products.find((prod) => prod.id === id);
+    if (product) {
+      return product;
+    } else {
+      console.log("Error: Not Found");
+    }
+  }
+
   addProduct(product) {
     if (
       !product.title ||
@@ -23,24 +36,11 @@ class ProductManager {
     let id = 1;
     if (this.products.length > 0) {
       id = this.products[this.products.length - 1].id + 1;
-      product.id = id;
     }
 
+    product.id = id;
     this.products.push(product);
     console.log("El producto fue agregado exitosamente");
-  }
-
-  getProducts() {
-    return this.products;
-  }
-
-  getProductById(id) {
-    const product = this.products.find((prod) => prod.id === id);
-    if (product) {
-      return product;
-    } else {
-      console.log("Error: Not Found");
-    }
   }
 }
 
@@ -73,5 +73,14 @@ productManager.addProduct({
   stock: 15,
 });
 
+productManager.addProduct({
+  title: "Producto 6",
+  description: "Descripción del producto 6",
+  price: 584,
+  thumbnail: "Sin imagen",
+  code: "AAA006",
+  stock: 15,
+});
+
 console.log(productManager.getProducts());
-// console.log(productManager.getProductById(3));
+console.log(productManager.getProductById(3));
