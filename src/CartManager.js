@@ -64,7 +64,7 @@ class CartManager {
   }
 }
 
-const cartsManager = new CartManager("../Carrito.json");
+const cartsManager = new CartManager("./Carrito.json");
 export default cartsManager;
 
 // async function managerCart() {

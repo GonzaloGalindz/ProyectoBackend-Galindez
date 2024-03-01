@@ -93,7 +93,7 @@ class ProductManager {
   }
 }
 
-const productsManager = new ProductManager("../Products.json");
+const productsManager = new ProductManager("./Products.json");
 export default productsManager;
 
 // const productsManager1 = {
