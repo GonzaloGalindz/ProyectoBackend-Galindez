@@ -93,7 +93,7 @@ class ProductManager {
   }
 }
 
-const productsManager = new ProductManager("./Products.json");
+const productsManager = new ProductManager("../Products.json");
 export default productsManager;
 
 // const productsManager1 = {
@@ -133,21 +133,21 @@ export default productsManager;
 // };
 
 // async function managerProd() {
-//   const productManager = new ProductManager("../Products.json");
-// await productManager.addProduct(productsManager1);
-// await productManager.addProduct(productsManager2);
-// await productManager.addProduct(productsManager3);
-// await productManager.addProduct(productsManager4);
-// const arrayAllProducts = await productManager.getProducts();
-// console.log(arrayAllProducts);
-// const prodById = await productManager.getProductById(2);
-// console.log(prodById);
-// await productManager.updateProduct(2, {
-//   title: "Producto 5",
-//   code: "AAA005",
-//   description: "Descripcion del producto 5",
-// });
-// await productManager.deleteProduct(1);
+//   const productManager = new ProductManager("./Products.json");
+//   await productManager.addProduct(productsManager1);
+//   await productManager.addProduct(productsManager2);
+//   await productManager.addProduct(productsManager3);
+//   await productManager.addProduct(productsManager4);
+//   const arrayAllProducts = await productManager.getProducts();
+//   console.log(arrayAllProducts);
+//   const prodById = await productManager.getProductById(2);
+//   console.log(prodById);
+//   await productManager.updateProduct(2, {
+//     title: "Producto 5",
+//     code: "AAA005",
+//     description: "Descripcion del producto 5",
+//   });
+//   await productManager.deleteProduct(1);
 // }
 
 // managerProd();
