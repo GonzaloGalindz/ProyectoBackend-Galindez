@@ -1,0 +1,24 @@
+<table style="background-color: rgb(108, 110, 239);">
+  <thead>
+    <tr>
+      <th style="padding: 1rem; font-size: 1.5rem">ID</th>
+      <th style="padding: 1rem; font-size: 1.5rem">Title</th>
+      <th style="padding: 1rem; font-size: 1.5rem">Description</th>
+      <th style="padding: 1rem; font-size: 1.5rem">Price</th>
+      <th style="padding: 1rem; font-size: 1.5rem">Stock</th>
+      <th style="padding: 1rem; font-size: 1.5rem">code</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each products}}
+      <tr style="text-align: center;">
+        <td style="padding: 0.7rem;">{{id}}</td>
+        <td style="padding: 0.7rem;">{{title}}</td>
+        <td style="padding: 0.7rem;">{{description}}</td>
+        <td style="padding: 0.7rem;">${{price}}</td>
+        <td style="padding: 0.7rem;">{{stock}}</td>
+        <td style="padding: 0.7rem;">{{code}}</td>
+      </tr>
+    {{/each}}
+  </tbody>
+</table>

@@ -66,15 +66,3 @@ class CartManager {
 
 const cartsManager = new CartManager("./Carrito.json");
 export default cartsManager;
-
-// async function managerCart() {
-//   const cartManager = new CartManager("./Carrito.json");
-//   await cartManager.createCart();
-//   // await cartManager.addProductInCart(1, 5);
-//   // await cartManager.addProductInCart(1, 5);
-//   // await cartManager.addProductInCart(1, 3);
-//   const cartById = await cartManager.getCart(2);
-//   console.log(cartById);
-// }
-
-// managerCart();
