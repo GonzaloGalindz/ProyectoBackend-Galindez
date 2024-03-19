@@ -12,7 +12,7 @@
       <input type="number" name="stock" id="stock" required />
       Code:
       <input type="text" name="code" id="code" required />
-      <input type="submit" value="Enviar" />
+      <input type="submit" value="Añadir" />
     </form>
   </div>
   <div>
@@ -28,23 +28,37 @@
 <table id="tableProds" style="background-color: rgb(108, 110, 239);">
   <thead>
     <tr>
-      <th style="padding: 1rem; font-size: 1.5rem">ID</th>
-      <th style="padding: 1rem; font-size: 1.5rem">Title</th>
-      <th style="padding: 1rem; font-size: 1.5rem">Description</th>
-      <th style="padding: 1rem; font-size: 1.5rem">Price</th>
-      <th style="padding: 1rem; font-size: 1.5rem">Stock</th>
-      <th style="padding: 1rem; font-size: 1.5rem">code</th>
+      <th
+        style="padding: 1rem; font-size: 1.5rem;border: 1px solid black;"
+      >ID</th>
+      <th
+        style="padding: 1rem; font-size: 1.5rem;border: 1px solid black;"
+      >Title</th>
+      <th
+        style="padding: 1rem; font-size: 1.5rem;border: 1px solid black;"
+      >Description</th>
+      <th
+        style="padding: 1rem; font-size: 1.5rem;border: 1px solid black;"
+      >Price</th>
+      <th
+        style="padding: 1rem; font-size: 1.5rem;border: 1px solid black;"
+      >Stock</th>
+      <th
+        style="padding: 1rem; font-size: 1.5rem;border: 1px solid black;"
+      >Code</th>
     </tr>
   </thead>
   <tbody id="bodyProd">
     {{#each products}}
       <tr style="text-align: center;">
-        <td style="padding: 0.7rem;">{{id}}</td>
-        <td style="padding: 0.7rem;">{{title}}</td>
-        <td style="padding: 0.7rem;">{{description}}</td>
-        <td style="padding: 0.7rem;">${{price}}</td>
-        <td style="padding: 0.7rem;">{{stock}}</td>
-        <td style="padding: 0.7rem;">{{code}}</td>
+        <td style="padding: 0.7rem;border: 1px solid black;">{{id}}</td>
+        <td style="padding: 0.7rem;border: 1px solid black;">{{title}}</td>
+        <td
+          style="padding: 0.7rem;border: 1px solid black;"
+        >{{description}}</td>
+        <td style="padding: 0.7rem;border: 1px solid black;">${{price}}</td>
+        <td style="padding: 0.7rem;border: 1px solid black;">{{stock}}</td>
+        <td style="padding: 0.7rem;border: 1px solid black;">{{code}}</td>
       </tr>
     {{/each}}
   </tbody>

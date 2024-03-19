@@ -34,19 +34,21 @@ socketServer.on("connection", (socket) => {
 
   socket.on("agregar", async (objProd) => {
     const opAdd = await productsManager.addProduct(objProd);
+    const allProducts = await productsManager.getProducts();
     if (opAdd) {
-      socketServer.emit("added", opAdd.newProduct);
+      socketServer.emit("added", allProducts);
     } else {
-      socket.emit("added", opAdd);
+      socket.emit("added", allProducts);
     }
   });
 
   socket.on("eliminar", async (id) => {
     const opDel = await productsManager.deleteProduct(+id);
+    const updatedProducts = await productsManager.getProducts();
     if (opDel) {
-      socketServer.emit("deleted", opDel.modData);
+      socketServer.emit("deleted", updatedProducts);
     } else {
-      socket.emit("deleted", opDel);
+      socket.emit("deleted", updatedProducts);
     }
   });
 });

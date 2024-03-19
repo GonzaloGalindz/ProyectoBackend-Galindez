@@ -37,12 +37,12 @@ socketClient.on("added", (newProduct) => {
   if (typeof newProduct === "object") {
     const addRow = `
         <tr>
-            <td>${newProduct.id}</td>
-            <td>${newProduct.title}</td>
-            <td>${newProduct.description}</td>
-            <td>${newProduct.price}</td>
-            <td>${newProduct.stock}</td>
-            <td>${newProduct.code}</td>
+            <td style="padding: 0.7rem;border: 1px solid black;">${newProduct.id}</td>
+            <td style="padding: 0.7rem;border: 1px solid black;">${newProduct.title}</td>
+            <td style="padding: 0.7rem;border: 1px solid black;">${newProduct.description}</td>
+            <td style="padding: 0.7rem;border: 1px solid black;">${newProduct.price}</td>
+            <td style="padding: 0.7rem;border: 1px solid black;">${newProduct.stock}</td>
+            <td style="padding: 0.7rem;border: 1px solid black;">${newProduct.code}</td>
         </tr>`;
     tableProds.innerHTML += addRow;
   }
@@ -54,12 +54,12 @@ socketClient.on("deleted", (arrProducts) => {
       .map((objProd) => {
         return `
               <tr>
-                  <td>${objProd.id}</td>
-                  <td>${objProd.title}</td>
-                  <td>${objProd.description}</td>
-                  <td>${objProd.price}</td>
-                  <td>${objProd.stock}</td>
-                  <td>${objProd.code}</td>
+                  <td style="padding: 0.7rem;border: 1px solid black;">${objProd.id}</td>
+                  <td style="padding: 0.7rem;border: 1px solid black;">${objProd.title}</td>
+                  <td style="padding: 0.7rem;border: 1px solid black;">${objProd.description}</td>
+                  <td style="padding: 0.7rem;border: 1px solid black;">${objProd.price}</td>
+                  <td style="padding: 0.7rem;border: 1px solid black;">${objProd.stock}</td>
+                  <td style="padding: 0.7rem;border: 1px solid black;">${objProd.code}</td>
               </tr>`;
       })
       .join(" ");
