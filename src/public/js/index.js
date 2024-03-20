@@ -34,18 +34,25 @@ formDelete.onsubmit = (e) => {
 };
 
 socketClient.on("added", (newProduct) => {
-  if (typeof newProduct === "object") {
-    const addRow = `
-        <tr>
-            <td style="padding: 0.7rem;border: 1px solid black;">${newProduct.id}</td>
-            <td style="padding: 0.7rem;border: 1px solid black;">${newProduct.title}</td>
-            <td style="padding: 0.7rem;border: 1px solid black;">${newProduct.description}</td>
-            <td style="padding: 0.7rem;border: 1px solid black;">${newProduct.price}</td>
-            <td style="padding: 0.7rem;border: 1px solid black;">${newProduct.stock}</td>
-            <td style="padding: 0.7rem;border: 1px solid black;">${newProduct.code}</td>
-        </tr>`;
-    tableProds.innerHTML += addRow;
+  if (!Array.isArray(newProduct)) {
+    newProduct = [newProduct];
   }
+  tableProds.innerHTML = "";
+
+  const rows = newProduct
+    .map(
+      (product) => `<tr>
+    <td style="padding: 0.7rem;border: 1px solid black;">${product.id}</td>
+    <td style="padding: 0.7rem;border: 1px solid black;">${product.title}</td>
+    <td style="padding: 0.7rem;border: 1px solid black;">${product.description}</td>
+    <td style="padding: 0.7rem;border: 1px solid black;">${product.price}</td>
+    <td style="padding: 0.7rem;border: 1px solid black;">${product.stock}</td>
+    <td style="padding: 0.7rem;border: 1px solid black;">${product.code}</td>
+</tr>`
+    )
+    .join("");
+
+  tableProds.innerHTML = rows;
 });
 
 socketClient.on("deleted", (arrProducts) => {
