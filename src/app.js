@@ -2,7 +2,11 @@ import express from "express";
 import handlebars from "express-handlebars";
 import { Server } from "socket.io";
 import { __dirname } from "./utils.js";
-import productsManager from "./managers/ProductManager.js";
+import "./dao/dbConfig.js";
+
+import { productsManagerMongo } from "./dao/managers/MongoDB/productManagerMongo.js";
+import { chatManagerMongo } from "./dao/managers/MongoDB/chatManagerMongo.js";
+// import productsManager from "./dao/managers/Filesystem/ProductManager.js";
 
 // Routers
 import productsRouter from "./routes/products.router.js";
@@ -29,12 +33,26 @@ const httpServer = app.listen(8080, () => {
 
 const socketServer = new Server(httpServer);
 
+const messages = [];
+
 socketServer.on("connection", (socket) => {
   console.log(`Cliente conectado: ${socket.id}`);
 
+  //CHAT
+  socket.on("mensaje", async (infoMensaje) => {
+    await chatManagerMongo.createOne(infoMensaje);
+    const message = await chatManagerMongo.findAll();
+    messages.push(message);
+    socketServer.emit("chat", message);
+  });
+  socket.on("usuarioNuevo", (usuario) => {
+    socket.broadcast.emit("broadcast", usuario);
+  });
+
+  //FORM PRODUCTS
   socket.on("agregar", async (objProd) => {
-    const opAdd = await productsManager.addProduct(objProd);
-    const allProducts = await productsManager.getProducts();
+    const opAdd = await productsManagerMongo.createOne(objProd);
+    const allProducts = await productsManagerMongo.findAll();
     if (opAdd) {
       socketServer.emit("added", allProducts);
     } else {
@@ -43,8 +61,8 @@ socketServer.on("connection", (socket) => {
   });
 
   socket.on("eliminar", async (id) => {
-    const opDel = await productsManager.deleteProduct(+id);
-    const updatedProducts = await productsManager.getProducts();
+    const opDel = await productsManagerMongo.deleteOne(id);
+    const updatedProducts = await productsManagerMongo.findAll();
     if (opDel) {
       socketServer.emit("deleted", updatedProducts);
     } else {
