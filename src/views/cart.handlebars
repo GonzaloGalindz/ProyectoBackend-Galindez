@@ -1,0 +1,17 @@
+<h1>View Cart</h1>
+<ul>
+  {{#each products}}
+    <li>
+      <h2>{{title}}</h2>
+      <p>Price: {{price}}</p>
+      <p>Description: {{description}}</p>
+      <p>Code: {{code}}</p>
+      <p>Stock: {{stock}}</p>
+    </li>
+  {{/each}}
+</ul>
+
+<h3><a href="/api/views/">Go to the main page</a></h3>
+<h3><a href="/api/views/products">Go to all products view</a></h3>
+
+<script src="/socket.io/socket.io.js"></script>

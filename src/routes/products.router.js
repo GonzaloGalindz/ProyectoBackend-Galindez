@@ -44,7 +44,7 @@ router.post("/", async (req, res) => {
 router.put("/:pid", async (req, res) => {
   const { pid } = req.params;
   try {
-    const prodUpdated = await productsManagerMongo.updateone(pid, req.body);
+    const prodUpdated = await productsManagerMongo.updateOne(pid, req.body);
     res.status(200).json({ msg: "Product updated", response: prodUpdated });
   } catch (error) {
     res.status(500).json({ error });

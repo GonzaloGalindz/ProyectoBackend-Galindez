@@ -25,19 +25,19 @@ router.get("/:cid", async (req, res) => {
 
 router.post("/", async (req, res) => {
   try {
-    const newCart = await cartsManagerMongo.createOne();
+    const initialCart = req.body.products || [];
+    const newCart = await cartsManagerMongo.createOne(initialCart);
     res.status(200).json({ msg: "New Cart", response: newCart });
   } catch (error) {
-    res.status(500).json({ error });
+    res.status(500).json({ error: error.message });
   }
 });
 
 router.post("/:cid/products/:pid", async (req, res) => {
   const cid = req.params.cid;
   const pid = req.params.pid;
-  const { quantity } = req.body;
   try {
-    const cart = await cartsManagerMongo.addProductToCart(cid, pid, quantity);
+    const cart = await cartsManagerMongo.addProductToCart(cid, pid);
     if (!cart) {
       return res.status(404).json({ error: "Cart not found" });
     }
@@ -72,16 +72,15 @@ router.put("/:cid/products/:pid", async (req, res) => {
     }
     res.status(200).json({ msg: "Updated product in cart", response: cart });
   } catch (error) {
-    console.log(error.message);
-    // res.status(500).json({ error });
+    res.status(500).json({ error });
   }
 });
 
 router.delete("/:cid", async (req, res) => {
   const { cid } = req.params;
   try {
-    const deletedCart = await cartsManagerMongo.deleteOne(cid);
-    res.status(200).json({ msg: "Cart deleted" });
+    const deletedCart = await cartsManagerMongo.deleteAllProducts(cid);
+    res.status(200).json({ msg: "All products were removed" });
   } catch (error) {
     res.status(500).json({ error });
   }

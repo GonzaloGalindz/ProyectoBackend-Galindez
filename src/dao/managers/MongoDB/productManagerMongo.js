@@ -10,14 +10,13 @@ class ProductsMongo {
     }
   }
 
-  async findAll(limit, page, sort) {
+  async findAll(limit, page) {
     try {
-      // if (!limit || !page || !sort) {
-      //   limit = 10;
-      //   page = 1;
-      //   sort = ASC;
-      // }
-      const result = await productsModel.paginate({ limit, page, sort });
+      if (!limit || !page) {
+        limit = 10;
+        page = 1;
+      }
+      const result = await productsModel.paginate({ limit, page });
       const info = {
         status: "Success",
         payload: result.docs,
@@ -32,13 +31,13 @@ class ProductsMongo {
       };
       return { info };
     } catch (error) {
-      return error;
+      return error.message;
     }
   }
 
   async findById(pid) {
     try {
-      const product = await productsModel.findById(pid);
+      const product = await productsModel.findById(pid).lean();
       return product;
     } catch (error) {
       return error;
