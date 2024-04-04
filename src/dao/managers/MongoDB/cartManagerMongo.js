@@ -23,7 +23,15 @@ class CartsMongo {
     try {
       const cart = await cartsModel
         .findById(cid)
-        .populate("products", ["title", "price", "code", "quantity"]);
+        .populate("products", [
+          "title",
+          "price",
+          "description",
+          "code",
+          "stock",
+          "quantity",
+        ])
+        .lean();
       return cart;
     } catch (error) {
       return error;
