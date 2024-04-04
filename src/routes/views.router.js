@@ -9,12 +9,12 @@ router.get("/chat", (req, res) => {
 });
 
 router.get("/", async (req, res) => {
-  const products = await productsManagerMongo.findAll();
+  const products = await productsManagerMongo.findProducts();
   res.render("home", { products });
 });
 
 router.get("/realtimeproducts", async (req, res) => {
-  const products = await productsManagerMongo.findAll();
+  const products = await productsManagerMongo.findProducts();
   res.render("realTimeProducts", { products });
 });
 

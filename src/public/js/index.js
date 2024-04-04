@@ -1,58 +1,5 @@
 const socketClient = io();
 
-//CHAT
-const user = document.getElementById("correo");
-const formulario = document.getElementById("formulario");
-const inputMessage = document.getElementById("message");
-const divChat = document.getElementById("chat");
-
-let usuario;
-
-Swal.fire({
-  title: "BIENVENIDO",
-  text: "Ingresa tu correo electronico",
-  input: "text",
-  inputValidator: (value) => {
-    if (!value) {
-      return "Necesitas ingresar tu correo";
-    }
-  },
-}).then((correoDelUsuario) => {
-  usuario = correoDelUsuario.value;
-  user.innerText = `Hola ${usuario}`;
-  socketClient.emit("usuarioNuevo", usuario);
-});
-
-formulario.onsubmit = (e) => {
-  e.preventDefault();
-  const infoMensaje = {
-    correoDelUsuario: usuario,
-    message: inputMessage.value,
-  };
-  socketClient.emit("mensaje", infoMensaje);
-  inputMessage.value = "";
-};
-
-socketClient.on("chat", (message) => {
-  const chat = message
-    .map((objMessage) => {
-      return `<p>${objMessage.correoDelUsuario}: ${objMessage.message}</p>`;
-    })
-    .join(" ");
-  divChat.innerHTML = chat;
-});
-
-socketClient.on("broadcast", (usuario) => {
-  Toastify({
-    text: `${usuario} se ha conectado`,
-    duration: 5000,
-    style: {
-      background: "linear-gradient(to right, #00b09b, #96c93d)",
-    },
-  }).showToast();
-});
-
-//RealTimeProducts
 const formProd = document.getElementById("formProduct");
 const title = document.getElementById("title");
 const description = document.getElementById("description");
@@ -61,7 +8,7 @@ const stock = document.getElementById("stock");
 const code = document.getElementById("code");
 const tableProds = document.getElementById("bodyProd");
 const formDelete = document.getElementById("deleteProduct");
-const id = document.getElementById("id");
+const _id = document.getElementById("_id");
 
 formProd.onsubmit = (e) => {
   e.preventDefault();
@@ -82,20 +29,20 @@ formProd.onsubmit = (e) => {
 
 formDelete.onsubmit = (e) => {
   e.preventDefault();
-  socketClient.emit("eliminar", Number(id.value));
-  id.value = "";
+  socketClient.emit("eliminar", _id.value);
+  _id.value = "";
 };
 
-socketClient.on("added", (newProduct) => {
-  if (!Array.isArray(newProduct)) {
-    newProduct = [newProduct];
+socketClient.on("added", (newProducts) => {
+  if (!Array.isArray(newProducts)) {
+    newProducts = [newProducts];
   }
   tableProds.innerHTML = "";
 
-  const rows = newProduct
+  const rows = newProducts
     .map(
       (product) => `<tr>
-    <td style="padding: 0.7rem;border: 1px solid black;">${product.id}</td>
+    <td style="padding: 0.7rem;border: 1px solid black;">${product._id}</td>
     <td style="padding: 0.7rem;border: 1px solid black;">${product.title}</td>
     <td style="padding: 0.7rem;border: 1px solid black;">${product.description}</td>
     <td style="padding: 0.7rem;border: 1px solid black;">${product.price}</td>
@@ -109,20 +56,24 @@ socketClient.on("added", (newProduct) => {
 });
 
 socketClient.on("deleted", (arrProducts) => {
-  if (typeof arrProducts === "object") {
-    const addRow = arrProducts
-      .map((objProd) => {
-        return `
+  // if (typeof arrProducts === "object") {
+  if (!Array.isArray(arrProducts)) {
+    arrProducts = [arrProducts];
+  }
+  tableProds.innerHTML = "";
+
+  const addRow = arrProducts
+    .map((objProd) => {
+      return `
               <tr>
-                  <td style="padding: 0.7rem;border: 1px solid black;">${objProd.id}</td>
+                  <td style="padding: 0.7rem;border: 1px solid black;">${objProd._id}</td>
                   <td style="padding: 0.7rem;border: 1px solid black;">${objProd.title}</td>
                   <td style="padding: 0.7rem;border: 1px solid black;">${objProd.description}</td>
                   <td style="padding: 0.7rem;border: 1px solid black;">${objProd.price}</td>
                   <td style="padding: 0.7rem;border: 1px solid black;">${objProd.stock}</td>
                   <td style="padding: 0.7rem;border: 1px solid black;">${objProd.code}</td>
               </tr>`;
-      })
-      .join(" ");
-    tableProds.innerHTML = addRow;
-  }
+    })
+    .join(" ");
+  tableProds.innerHTML = addRow;
 });

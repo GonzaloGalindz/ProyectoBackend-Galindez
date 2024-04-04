@@ -6,12 +6,9 @@ const router = Router();
 
 router.get("/", async (req, res) => {
   try {
-    const products = await productsManagerMongo.findAll();
-    if (products.length) {
-      res.status(200).json({ msg: "All Products", products });
-    } else {
-      res.status(200).json({ msg: "No products found" });
-    }
+    const { limit, page, sort } = req.query;
+    const products = await productsManagerMongo.findAll(limit, page, sort);
+    res.status(200).json({ msg: "All products", response: products });
   } catch (error) {
     res.status(500).json({ error });
   }
@@ -24,7 +21,7 @@ router.get("/:pid", async (req, res) => {
     if (!product) {
       res.status(400).json({ msg: "No product ID found" });
     } else {
-      res.status(200).json({ msg: "Product", product });
+      res.status(200).json({ msg: "Product", response: product });
     }
   } catch (error) {
     res.status(500).json({ error });
@@ -38,7 +35,7 @@ router.post("/", async (req, res) => {
   }
   try {
     const newProduct = await productsManagerMongo.createOne(req.body);
-    res.status(200).json({ msg: "New Product", newProduct });
+    res.status(200).json({ msg: "New Product", response: newProduct });
   } catch (error) {
     res.status(500).json({ error });
   }
@@ -47,8 +44,8 @@ router.post("/", async (req, res) => {
 router.put("/:pid", async (req, res) => {
   const { pid } = req.params;
   try {
-    const prodUpdated = await productsManagerMongo.updateOne(pid, req.body);
-    res.status(200).json({ msg: "Product updated", prodUpdated });
+    const prodUpdated = await productsManagerMongo.updateone(pid, req.body);
+    res.status(200).json({ msg: "Product updated", response: prodUpdated });
   } catch (error) {
     res.status(500).json({ error });
   }
@@ -58,7 +55,7 @@ router.delete("/:pid", async (req, res) => {
   const { pid } = req.params;
   try {
     const deletedProduct = await productsManagerMongo.deleteOne(pid);
-    res.status(200).json({ msg: "Product deleted", deletedProduct });
+    res.status(200).json({ msg: "Product deleted", response: deletedProduct });
   } catch (error) {
     res.status(500).json({ error });
   }

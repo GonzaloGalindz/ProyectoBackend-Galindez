@@ -40,11 +40,12 @@ socketServer.on("connection", (socket) => {
 
   //CHAT
   socket.on("mensaje", async (infoMensaje) => {
-    await chatManagerMongo.createOne(infoMensaje);
+    const newMessage = await chatManagerMongo.createOne(infoMensaje);
     const message = await chatManagerMongo.findAll();
-    messages.push(message);
+    messages.push(newMessage);
     socketServer.emit("chat", message);
   });
+
   socket.on("usuarioNuevo", (usuario) => {
     socket.broadcast.emit("broadcast", usuario);
   });
@@ -60,8 +61,8 @@ socketServer.on("connection", (socket) => {
     }
   });
 
-  socket.on("eliminar", async (id) => {
-    const opDel = await productsManagerMongo.deleteOne(id);
+  socket.on("eliminar", async (_id) => {
+    const opDel = await productsManagerMongo.deleteOne(_id);
     const updatedProducts = await productsManagerMongo.findAll();
     if (opDel) {
       socketServer.emit("deleted", updatedProducts);

@@ -1,10 +1,36 @@
 import { productsModel } from "../../models/products.model.js";
 
 class ProductsMongo {
-  async findAll() {
+  async findProducts() {
     try {
-      const products = await productsModel.find({});
+      const products = await productsModel.find({}).lean();
       return products;
+    } catch (error) {
+      return error;
+    }
+  }
+
+  async findAll(limit, page, sort) {
+    try {
+      // if (!limit || !page || !sort) {
+      //   limit = 10;
+      //   page = 1;
+      //   sort = ASC;
+      // }
+      const result = await productsModel.paginate({ limit, page, sort });
+      const info = {
+        status: "Success",
+        payload: result.docs,
+        totalPages: result.totalPages,
+        prevPage: result.prevPage,
+        nextPage: result.nextPage,
+        page: result.page,
+        hasPrevPage: result.hasPrevPage,
+        hasNextPage: result.hasNextPage,
+        prevLink: `http://localhost:8080/api/products?page=${result.prevPage}`,
+        nextLink: `http://localhost:8080/api/products?page=${result.nextPage}`,
+      };
+      return { info };
     } catch (error) {
       return error;
     }

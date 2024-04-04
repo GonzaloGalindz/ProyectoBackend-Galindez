@@ -19,7 +19,7 @@
     <h2 style="background-color: rgb(255, 47, 47);">Eliminar Producto</h2>
     <form id="deleteProduct">
       ID:
-      <input type="number" name="id" id="id" />
+      <input type="text" name="_id" id="_id" />
       <input type="submit" value="Eliminar" />
     </form>
   </div>
@@ -51,7 +51,7 @@
   <tbody id="bodyProd">
     {{#each products}}
       <tr style="text-align: center;">
-        <td style="padding: 0.7rem;border: 1px solid black;">{{id}}</td>
+        <td style="padding: 0.7rem;border: 1px solid black;">{{_id}}</td>
         <td style="padding: 0.7rem;border: 1px solid black;">{{title}}</td>
         <td
           style="padding: 0.7rem;border: 1px solid black;"
