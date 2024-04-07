@@ -13,13 +13,25 @@ router.get("/", async (req, res) => {
   res.render("home");
 });
 
+router.get("/login", (req, res) => {
+  res.render("login");
+});
+
+router.get("/register", (req, res) => {
+  res.render("register");
+});
+
 router.get("/products", async (req, res) => {
   const products = await productsManagerMongo.findProducts();
+  // let user = req.session.user;
+  //res.render("products", { products: products, user: user });
   res.render("products", { products });
 });
 
 router.get("/realtimeproducts", async (req, res) => {
   const products = await productsManagerMongo.findProducts();
+  // let user = req.session.user;
+  //res.render("products", { products: products, user: user });
   res.render("realTimeProducts", { products });
 });
 
