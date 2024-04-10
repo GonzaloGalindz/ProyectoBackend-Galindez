@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { usersManagerMongo } from "../dao/managers/MongoDB/userManagerMongo.js";
 import { hashData, compareData } from "../utils.js";
+import passport from "passport";
 
 const router = Router();
 
@@ -35,8 +36,7 @@ router.post("/login", async (req, res) => {
     return res.status(401).json({ message: "Email or Password not valid" });
   }
 
-  // req.session.user = userDB;
-  req.session.email = email;
+  req.session.user = userDB;
 
   if (userDB.role == "admin") {
     res.redirect("/api/views/realtimeproducts");
@@ -53,6 +53,68 @@ router.get("/logout", (req, res) => {
         .send({ status: "Error", error: "Error when closing transfer" });
     }
     res.redirect("/api/views/login");
+  });
+});
+
+router.get("/errorRegister", (req, res) => {
+  return res.status(500).json({
+    status: "Error",
+    error: `Error registering`,
+  });
+});
+
+router.post(
+  "/register",
+  passport.authenticate("register", {
+    failureRedirect: "/api/sessions/errorRegister",
+  }),
+  async (req, res) => {
+    res.status(200).json({ message: "User created successfully" });
+  }
+);
+
+router.get("/errorLogin", (req, res) => {
+  return res.status(500).json({
+    status: "Error",
+    error: `Login error`,
+  });
+});
+
+router.post(
+  "/login",
+  passport.authenticate("login", {
+    failureRedirect: "/api/sessions/errorLogin",
+  }),
+  async (req, res) => {
+    let user = req.user;
+    user = { ...user };
+    res.status(200).json({
+      message: "Login successfully",
+      user,
+    });
+  }
+);
+
+router.get("/github", passport.authenticate("github", {}), (req, res) => {});
+
+router.get(
+  "/callbackGithub",
+  passport.authenticate("github", {
+    failureRedirect: "/api/sessions/errorGitHub",
+  }),
+  (req, res) => {
+    req.session.user = req.user;
+    return res.status(200).json({
+      message: "Successful login",
+      user: req.user,
+    });
+  }
+);
+
+router.get("/errorGitHub", (req, res) => {
+  return res.status(500).json({
+    status: "Error",
+    error: `Failed to authenticate with GitHub`,
   });
 });
 

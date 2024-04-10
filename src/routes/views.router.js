@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { productsManagerMongo } from "../dao/managers/MongoDB/productManagerMongo.js";
 import { cartsManagerMongo } from "../dao/managers/MongoDB/cartManagerMongo.js";
+import { auth } from "../middlewares/auth.js";
 // import productsManager from "../dao/managers/Filesystem/ProductManager.js";
 
 const router = Router();
@@ -21,21 +22,19 @@ router.get("/register", (req, res) => {
   res.render("register");
 });
 
-router.get("/products", async (req, res) => {
+router.get("/products", auth, async (req, res) => {
   const products = await productsManagerMongo.findProducts();
-  // let user = req.session.user;
-  //res.render("products", { products: products, user: user });
-  res.render("products", { products });
+  let usuario = req.session.user;
+  res.render("products", { products, usuario });
 });
 
-router.get("/realtimeproducts", async (req, res) => {
+router.get("/realtimeproducts", auth, async (req, res) => {
   const products = await productsManagerMongo.findProducts();
-  // let user = req.session.user;
-  //res.render("products", { products: products, user: user });
-  res.render("realTimeProducts", { products });
+  let usuario = req.session.user;
+  res.render("products", { products, usuario });
 });
 
-router.get("/product/:pid", async (req, res) => {
+router.get("/product/:pid", auth, async (req, res) => {
   try {
     const { pid } = req.params;
     const product = await productsManagerMongo.findById(pid);
@@ -48,7 +47,7 @@ router.get("/product/:pid", async (req, res) => {
   }
 });
 
-router.get("/cart/:cid", async (req, res) => {
+router.get("/cart/:cid", auth, async (req, res) => {
   try {
     const { cid } = req.params;
     const cart = await cartsManagerMongo.findById(cid);

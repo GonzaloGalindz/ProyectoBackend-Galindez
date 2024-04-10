@@ -3,9 +3,11 @@ import handlebars from "express-handlebars";
 import cookieParser from "cookie-parser";
 import session from "express-session";
 import MongoStore from "connect-mongo";
+import passport from "passport";
 import { Server } from "socket.io";
 import { __dirname } from "./utils.js";
 import "./dao/dbConfig.js";
+import "./config/passport.config.js";
 
 import { productsManagerMongo } from "./dao/managers/MongoDB/productManagerMongo.js";
 import { chatManagerMongo } from "./dao/managers/MongoDB/chatManagerMongo.js";
@@ -44,6 +46,10 @@ app.use(
     saveUninitialized: true,
   })
 );
+
+//passport
+app.use(passport.initialize());
+app.use(passport.session());
 
 //routes
 app.use("/api/products", productsRouter);
