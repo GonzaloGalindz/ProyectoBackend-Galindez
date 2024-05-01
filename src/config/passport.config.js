@@ -29,7 +29,9 @@ passport.use(
           first_name,
           last_name,
           email,
+          age,
           password: hashPassword,
+          cart,
         });
         return done(null, newUser);
       } catch (error) {
@@ -69,8 +71,8 @@ passport.use(
   "github",
   new github.Strategy(
     {
-      clientID: "completar",
-      clientSecret: "completar",
+      clientID: "Iv1.89c38be27114e775",
+      clientSecret: "a62c188d48c1294b929bad5bc2bcfc7b128f0ec2",
       callbackURL: "http://localhost:8080/api/sessions/callbackGithub",
     },
     async function (accessToken, refreshToken, profile, done) {
@@ -78,6 +80,8 @@ passport.use(
         let first_name = profile._json.name.split(" ")[0];
         let last_name = profile._json.name.split(" ")[1];
         let email = profile._json.email;
+        let age = " ";
+        // let cart = { payload: "Products" };
         if (!email) {
           return done(null, false);
         }
@@ -87,7 +91,9 @@ passport.use(
             first_name,
             last_name,
             email,
+            age,
             profileGithub: profile,
+            // cart,
           });
         }
 

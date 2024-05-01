@@ -118,4 +118,14 @@ router.get("/errorGitHub", (req, res) => {
   });
 });
 
+router.get("/current", (req, res) => {
+  if (req.session.user) {
+    res
+      .status(200)
+      .json({ message: "Profile information", user: req.session.user });
+  } else {
+    res.status(401).json({ error: "User not authenticated" });
+  }
+});
+
 export default router;
