@@ -1,4 +1,4 @@
-import { usersModel } from "../../models/users.model.js";
+import { usersModel } from "../../MongoDB/models/users.model.js";
 
 class UsersMongo {
   async createUser(user) {

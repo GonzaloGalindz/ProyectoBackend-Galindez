@@ -1,53 +1,39 @@
-import { cartsModel } from "../../models/carts.model.js";
+import { cartsModel } from "../../MongoDB/models/carts.model.js";
 
 class CartsMongo {
+  constructor() {}
+
   async saveCart(cart) {
-    try {
-      await cart.save();
-      return cart;
-    } catch (error) {
-      return error;
-    }
+    await cart.save();
+    return cart;
   }
 
   async findAll() {
-    try {
-      const carts = await cartsModel.find({});
-      return carts;
-    } catch (error) {
-      return error;
-    }
+    const carts = await cartsModel.find().lean();
+    return carts;
   }
 
   async findById(cid) {
-    try {
-      const cart = await cartsModel
-        .findById(cid)
-        .populate("products", [
-          "title",
-          "price",
-          "description",
-          "code",
-          "stock",
-          "quantity",
-        ])
-        .lean();
-      return cart;
-    } catch (error) {
-      return error;
-    }
+    const cart = await cartsModel
+      .findById(cid)
+      .populate("products", [
+        "title",
+        "price",
+        "description",
+        "code",
+        "stock",
+        "quantity",
+      ])
+      .lean();
+    return cart;
   }
 
   async createOne(initialCart = []) {
     const newCart = await cartsModel.create({
       products: initialCart,
     });
-    try {
-      const savedCart = await this.saveCart(newCart);
-      return savedCart;
-    } catch (error) {
-      return error;
-    }
+    const savedCart = await this.saveCart(newCart);
+    return savedCart;
   }
 
   async addProductToCart(cid, pid) {
@@ -69,15 +55,6 @@ class CartsMongo {
     }
   }
 
-  async updateOne(cid, obj) {
-    try {
-      const updatedCart = await cartsModel.updateOne({ _id: cid }, { ...obj });
-      return updatedCart;
-    } catch (error) {
-      return error;
-    }
-  }
-
   async updateProductInCart(cid, pid, newQuantity) {
     try {
       const cart = await cartsModel.findById(cid);
@@ -94,7 +71,6 @@ class CartsMongo {
     } catch (error) {
       return error;
     }
-    return cart;
   }
 
   async deleteProductInCart(cid, pid) {
@@ -109,16 +85,10 @@ class CartsMongo {
     }
   }
 
-  async deleteAllProducts(cid) {
-    try {
-      const cart = await cartsModel.findByIdAndDelete(cid);
-      if (!cart) throw new Error("Cart not found");
-      cart.products = [];
-      await this.saveCart(cart);
-      return cart;
-    } catch (error) {
-      return error;
-    }
+  async deleteCart(cid) {
+    const cart = await cartsModel.findByIdAndDelete(cid);
+    if (!cart) throw new Error("Cart not found");
+    return cart;
   }
 }
 

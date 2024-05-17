@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { usersManagerMongo } from "../dao/managers/MongoDB/userManagerMongo.js";
+import { usersManagerMongo } from "../DAL/dao/MongoDao/users.dao.js";
 import { hashData, compareData } from "../utils.js";
 import passport from "passport";
 

@@ -1,8 +1,9 @@
 import passport from "passport";
 import local from "passport-local";
 import github from "passport-github2";
-import { usersModel } from "../dao/models/users.model.js";
+import { usersModel } from "../DAL/MongoDB/models/users.model.js";
 import { compareData, hashData } from "../utils.js";
+import config from "../config.js";
 
 passport.use(
   "register",
@@ -71,8 +72,8 @@ passport.use(
   "github",
   new github.Strategy(
     {
-      clientID: "Iv1.89c38be27114e775",
-      clientSecret: "a62c188d48c1294b929bad5bc2bcfc7b128f0ec2",
+      clientID: config.CLIENT_ID_GITHUB,
+      clientSecret: config.CLIENT_SECRET_GITHUB,
       callbackURL: "http://localhost:8080/api/sessions/callbackGithub",
     },
     async function (accessToken, refreshToken, profile, done) {

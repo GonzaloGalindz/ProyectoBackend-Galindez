@@ -1,6 +1,6 @@
 import { Router } from "express";
-import { productsManagerMongo } from "../dao/managers/MongoDB/productManagerMongo.js";
-import { cartsManagerMongo } from "../dao/managers/MongoDB/cartManagerMongo.js";
+import { productsManagerMongo } from "../DAL/dao/MongoDao/products.dao.js";
+import { cartsManagerMongo } from "../DAL/dao/MongoDao/carts.dao.js";
 import { auth } from "../middlewares/auth.js";
 // import productsManager from "../dao/managers/Filesystem/ProductManager.js";
 

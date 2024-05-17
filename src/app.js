@@ -6,12 +6,12 @@ import MongoStore from "connect-mongo";
 import passport from "passport";
 import { Server } from "socket.io";
 import { __dirname } from "./utils.js";
-import "./dao/dbConfig.js";
+import config from "./config.js";
+import "./DAL/MongoDB/dbConfig.js";
 import "./config/passport.config.js";
 
-import { productsManagerMongo } from "./dao/managers/MongoDB/productManagerMongo.js";
-import { chatManagerMongo } from "./dao/managers/MongoDB/chatManagerMongo.js";
-// import productsManager from "./dao/managers/Filesystem/ProductManager.js";
+import { productsManagerMongo } from "./DAL/dao/MongoDao/products.dao.js";
+import { chatManagerMongo } from "./DAL/dao/MongoDao/chat.dao.js";
 
 // Routers
 import productsRouter from "./routes/products.router.js";
@@ -37,11 +37,10 @@ app.use(cookieParser("SecretKeyCookies"));
 app.use(
   session({
     store: new MongoStore({
-      mongoUrl:
-        "mongodb+srv://gonzagalin777:e6fcvUQkvu8zSVy1@cluster0.uonwr28.mongodb.net/ecommerce53110DB?retryWrites=true&w=majority&appName=Cluster0",
+      mongoUrl: config.MONGO_URI,
       ttl: 60,
     }),
-    secret: "SecretSession",
+    secret: config.SESSIONSECRET,
     resave: true,
     saveUninitialized: true,
   })
@@ -57,8 +56,8 @@ app.use("/api/carts", cartsRouter);
 app.use("/api/views", viewsRouter);
 app.use("/api/sessions", sessionsRouter);
 
-const httpServer = app.listen(8080, () => {
-  console.log("Listening express server on port 8080");
+const httpServer = app.listen(config.PORT, () => {
+  console.log(`Listening express server on port ${config.PORT}`);
 });
 
 const socketServer = new Server(httpServer);

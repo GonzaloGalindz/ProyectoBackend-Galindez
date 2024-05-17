@@ -1,37 +1,21 @@
 import { Router } from "express";
-import { cartsManagerMongo } from "../dao/managers/MongoDB/cartManagerMongo.js";
-// import cartsManager from "../dao/managers/Filesystem/CartManager.js";
+import { cartsManagerMongo } from "../DAL/dao/MongoDao/carts.dao.js";
+import {
+  createCart,
+  deleteCart,
+  getCartById,
+  getCarts,
+} from "../controllers/carts.controller.js";
 
 const router = Router();
 
-router.get("/", async (req, res) => {
-  try {
-    const carts = await cartsManagerMongo.findAll();
-    res.status(200).json({ msg: "All carts", response: carts });
-  } catch (error) {
-    res.status(500).json({ error });
-  }
-});
+router.get("/", getCarts);
 
-router.get("/:cid", async (req, res) => {
-  const { cid } = req.params;
-  try {
-    const cart = await cartsManagerMongo.findById(cid);
-    res.status(200).json({ msg: "Cart by Id", response: cart });
-  } catch (error) {
-    res.status(500).json({ error });
-  }
-});
+router.get("/:cid", getCartById);
 
-router.post("/", async (req, res) => {
-  try {
-    const initialCart = req.body.products || [];
-    const newCart = await cartsManagerMongo.createOne(initialCart);
-    res.status(200).json({ msg: "New Cart", response: newCart });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
+router.post("/", createCart);
+
+router.delete("/:cid", deleteCart);
 
 router.post("/:cid/products/:pid", async (req, res) => {
   const cid = req.params.cid;
@@ -42,16 +26,6 @@ router.post("/:cid/products/:pid", async (req, res) => {
       return res.status(404).json({ error: "Cart not found" });
     }
     res.status(200).json({ msg: "Product added in to cart", response: cart });
-  } catch (error) {
-    res.status(500).json({ error });
-  }
-});
-
-router.put("/:cid", async (req, res) => {
-  const { cid } = req.params;
-  try {
-    const cartUpdated = await cartsManagerMongo.updateOne(cid, req.body);
-    res.status(200).json({ msg: "Cart updated", response: cartUpdated });
   } catch (error) {
     res.status(500).json({ error });
   }
@@ -71,16 +45,6 @@ router.put("/:cid/products/:pid", async (req, res) => {
       return res.status(400).json({ error: "Cart not found" });
     }
     res.status(200).json({ msg: "Updated product in cart", response: cart });
-  } catch (error) {
-    res.status(500).json({ error });
-  }
-});
-
-router.delete("/:cid", async (req, res) => {
-  const { cid } = req.params;
-  try {
-    const deletedCart = await cartsManagerMongo.deleteAllProducts(cid);
-    res.status(200).json({ msg: "All products were removed" });
   } catch (error) {
     res.status(500).json({ error });
   }
@@ -107,38 +71,5 @@ router.delete("/:cid/products/:pid", async (req, res) => {
 //   } catch (error) {
 //     res.status(500).json({ error });
 //   }
-
-//FileSystem
-
-// router.get("/:cid", async (req, res) => {
-//   const { cid } = req.params;
-//   try {
-//     const cart = await cartsManager.getCart(+cid);
-//     res.status(200).json({ msg: "Cart", response: cart });
-//   } catch (error) {
-//     res.status(500).json({ error });
-//   }
-// });
-
-// router.post("/", async (req, res) => {
-//   try {
-//     const newCart = await cartsManager.createCart();
-//     res.status(200).json({ msg: "New Cart", response: newCart });
-//   } catch (error) {
-//     res.status(500).json({ error });
-//   }
-// });
-
-// router.post("/:cid/product/:pid", async (req, res) => {
-//   const { cid, pid } = req.params;
-//   try {
-//     const addProduct = await cartsManager.addProductInCart(+cid, +pid);
-//     res
-//       .status(200)
-//       .json({ msg: "Products in this cart", response: addProduct });
-//   } catch (error) {
-//     res.status(500).json({ error });
-//   }
-// });
 
 export default router;
