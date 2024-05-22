@@ -5,7 +5,7 @@ export const getProducts = async (req, res) => {
     const products = await productsService.findProducts();
     res.status(200).json({ message: "Products", response: products });
   } catch (error) {
-    res.status(500).json({ error });
+    res.status(500).json({ error: error.message });
   }
 };
 
@@ -15,7 +15,7 @@ export const getProductById = async (req, res) => {
     const product = await productsService.findById(pid);
     res.status(200).json({ message: "Product By Id", response: product });
   } catch (error) {
-    res.status(500).json({ error });
+    res.status(500).json({ error: error.message });
   }
 };
 
@@ -26,7 +26,7 @@ export const createProduct = async (req, res) => {
       .status(200)
       .json({ message: "New product created", response: newProduct });
   } catch (error) {
-    res.status(500).json({ error });
+    res.status(500).json({ error: error.message });
   }
 };
 
@@ -38,7 +38,7 @@ export const updateProduct = async (req, res) => {
       .status(200)
       .json({ message: "Product updated", response: updatedProduct });
   } catch (error) {
-    res.status(500).json({ error });
+    res.status(500).json({ error: error.message });
   }
 };
 
@@ -48,6 +48,6 @@ export const deleteProduct = async (req, res) => {
     const deletedProduct = await productsService.deleteProduct(pid);
     res.status(200).json({ message: "Product removed" });
   } catch (error) {
-    res.status(500).json({ error });
+    res.status(500).json({ error: error.message });
   }
 };

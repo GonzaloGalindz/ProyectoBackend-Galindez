@@ -1,12 +1,11 @@
 import { Router } from "express";
 import { productsManagerMongo } from "../DAL/dao/MongoDao/products.dao.js";
 import { cartsManagerMongo } from "../DAL/dao/MongoDao/carts.dao.js";
-import { auth } from "../middlewares/auth.js";
-// import productsManager from "../dao/managers/Filesystem/ProductManager.js";
+import { auth, isAdmin, isUser } from "../middlewares/auth.js";
 
 const router = Router();
 
-router.get("/chat", (req, res) => {
+router.get("/chat", isUser, (req, res) => {
   res.render("chat");
 });
 
@@ -28,7 +27,7 @@ router.get("/products", auth, async (req, res) => {
   res.render("products", { products, usuario });
 });
 
-router.get("/realtimeproducts", auth, async (req, res) => {
+router.get("/realtimeproducts", isAdmin, async (req, res) => {
   const products = await productsManagerMongo.findProducts();
   let usuario = req.session.user;
   res.render("products", { products, usuario });
@@ -59,17 +58,5 @@ router.get("/cart/:cid", auth, async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
-
-//FileSystem
-
-// router.get("/", async (req, res) => {
-//   const products = await productsManager.getProducts();
-//   res.render("home", { products });
-// });
-
-// router.get("/realtimeproducts", async (req, res) => {
-//   const products = await productsManager.getProducts();
-//   res.render("realTimeProducts", { products });
-// });
 
 export default router;

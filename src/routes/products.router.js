@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { isAdmin } from "../middlewares/auth.js";
 import {
   createProduct,
   deleteProduct,
@@ -13,10 +14,10 @@ router.get("/", getProducts);
 
 router.get("/:pid", getProductById);
 
-router.post("/", createProduct);
+router.post("/", isAdmin, createProduct);
 
-router.put("/:pid", updateProduct);
+router.put("/:pid", isAdmin, updateProduct);
 
-router.delete("/:pid", deleteProduct);
+router.delete("/:pid", isAdmin, deleteProduct);
 
 export default router;

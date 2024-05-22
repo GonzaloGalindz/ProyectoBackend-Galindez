@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { usersManagerMongo } from "../DAL/dao/MongoDao/users.dao.js";
 import { hashData, compareData } from "../utils.js";
+import UsersDto from "../DAL/dto/users.dto.js";
 import passport from "passport";
 
 const router = Router();
@@ -119,10 +120,9 @@ router.get("/errorGitHub", (req, res) => {
 });
 
 router.get("/current", (req, res) => {
-  if (req.session.user) {
-    res
-      .status(200)
-      .json({ message: "Profile information", user: req.session.user });
+  const userDto = new UsersDto(req.session.user);
+  if (userDto) {
+    res.status(200).json({ message: "Profile information", user: userDto });
   } else {
     res.status(401).json({ error: "User not authenticated" });
   }

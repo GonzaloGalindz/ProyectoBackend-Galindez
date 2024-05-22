@@ -23,7 +23,7 @@ const productsSchema = new mongoose.Schema({
   stock: {
     type: Number,
     required: true,
-    default: 0,
+    default: 100,
   },
 });
 

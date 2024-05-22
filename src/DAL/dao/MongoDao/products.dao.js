@@ -9,8 +9,10 @@ class ProductsMongo {
   }
 
   async findAll(obj) {
-    const { limit = 10, page = 1, ...query } = obj;
-    const result = await productsModel.paginate(query, {
+    const { limit = 10, page = 1 } = obj || {};
+    const queryObject = obj?.query || {};
+
+    const result = await productsModel.paginate(queryObject, {
       limit,
       page,
     });

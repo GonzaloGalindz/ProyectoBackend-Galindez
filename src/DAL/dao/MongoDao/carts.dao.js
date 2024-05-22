@@ -1,3 +1,4 @@
+import { ObjectId } from "mongodb";
 import { cartsModel } from "../../MongoDB/models/carts.model.js";
 
 class CartsMongo {
@@ -16,7 +17,7 @@ class CartsMongo {
   async findById(cid) {
     const cart = await cartsModel
       .findById(cid)
-      .populate("products", [
+      .populate("products._id", [
         "title",
         "price",
         "description",
@@ -38,18 +39,22 @@ class CartsMongo {
 
   async addProductToCart(cid, pid) {
     try {
-      const cart = await cartsModel.findById(cid);
+      const cart = await cartsModel.findById({ _id: cid });
       if (!cart) {
         throw new Error("Cart not found");
       }
-      const existingProduct = cart.products.find((p) => p.pid.equals(pid));
+      const pidObjectId = new ObjectId(pid);
+      const existingProduct = cart.products.find((p) =>
+        p._id.equals(pidObjectId)
+      );
+
       if (existingProduct) {
         existingProduct.quantity++;
       } else {
-        cart.products.push({ pid, quantity: 1 });
+        cart.products.push({ _id: pidObjectId, quantity: 1 });
       }
       await this.saveCart(cart);
-      return cart.products.find((p) => p.pid.equals(pid));
+      return cart.products.find((p) => p._id.equals(pidObjectId));
     } catch (error) {
       return error;
     }
@@ -57,11 +62,13 @@ class CartsMongo {
 
   async updateProductInCart(cid, pid, newQuantity) {
     try {
-      const cart = await cartsModel.findById(cid);
+      const cart = await cartsModel.findById({ _id: cid });
       if (!cart) {
         throw new Error("Cart not found");
       }
-      const product = cart.products.find((p) => p.pid.equals(pid));
+      const pidObjectId = new ObjectId(pid);
+      const product = cart.products.find((p) => p._id.equals(pidObjectId));
+
       if (!product) {
         throw new Error("Product not found in this cart");
       }
@@ -75,9 +82,10 @@ class CartsMongo {
 
   async deleteProductInCart(cid, pid) {
     try {
-      const cart = await cartsModel.findById(cid);
+      const cart = await cartsModel.findById({ _id: cid });
       if (!cart) throw new Error("Cart not found");
-      cart.products = cart.products.filter((p) => !p.pid.equals(pid));
+      const pidObjectId = new ObjectId(pid);
+      cart.products = cart.products.filter((p) => !p._id.equals(pidObjectId));
       await this.saveCart(cart);
       return cart;
     } catch (error) {
