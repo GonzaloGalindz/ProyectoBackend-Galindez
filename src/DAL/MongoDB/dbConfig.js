@@ -5,4 +5,6 @@ const uri = config.MONGO_URI;
 mongoose
   .connect(uri)
   .then(() => console.log("Connected to the database"))
-  .catch((error) => console.log(error));
+  .catch((error) => {
+    console.error("Error connecting to database", error);
+  });

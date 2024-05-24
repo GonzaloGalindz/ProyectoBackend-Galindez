@@ -9,6 +9,7 @@ import { __dirname } from "./utils.js";
 import config from "./config.js";
 import "./DAL/MongoDB/dbConfig.js";
 import "./config/passport.config.js";
+import { generate100FakerProducts } from "./mocks/products.mock.js";
 
 import { productsManagerMongo } from "./DAL/dao/MongoDao/products.dao.js";
 import { chatManagerMongo } from "./DAL/dao/MongoDao/chat.dao.js";
@@ -55,6 +56,16 @@ app.use("/api/products", productsRouter);
 app.use("/api/carts", cartsRouter);
 app.use("/api/views", viewsRouter);
 app.use("/api/sessions", sessionsRouter);
+
+//router mock faker
+app.get("/api/mockingProducts", (req, res) => {
+  const fakerProducts = [];
+  for (let i = 0; i < 100; i++) {
+    const productMocking = generate100FakerProducts();
+    fakerProducts.push(productMocking);
+  }
+  res.status(200).json({ fakerProducts });
+});
 
 const httpServer = app.listen(config.PORT, () => {
   console.log(`Listening express server on port ${config.PORT}`);

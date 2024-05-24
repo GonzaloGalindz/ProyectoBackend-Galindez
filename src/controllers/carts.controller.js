@@ -1,13 +1,16 @@
 import { productsService } from "../services/products.service.js";
 import { cartsService } from "../services/carts.service.js";
 import { ticketsController } from "./tickets.controller.js";
+import CustomError from "../errors/custom.error.js";
+import { ErrorMessages } from "../errors/errorNum.js";
 
 export const getCarts = async (req, res) => {
   try {
     const carts = await cartsService.findAll();
     res.status(200).json({ message: "Carts", response: carts });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    const customError = CustomError.createError(ErrorMessages.GET_CARTS_ERROR);
+    return res.status(customError.status).json(customError);
   }
 };
 
@@ -17,7 +20,8 @@ export const getCartById = async (req, res) => {
     const cart = await cartsService.findById({ _id: cid });
     res.status(200).json({ message: "Cart By Id", response: cart });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    const customError = CustomError.createError(ErrorMessages.CART_NOT_FOUND);
+    return res.status(customError.status).json(customError);
   }
 };
 
@@ -26,7 +30,10 @@ export const createCart = async (req, res) => {
     const newCart = await cartsService.createCart();
     res.status(200).json({ message: "New cart created", response: newCart });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    const customError = CustomError.createError(
+      ErrorMessages.CREATE_CART_ERROR
+    );
+    return res.status(customError.status).json(customError);
   }
 };
 
@@ -36,7 +43,10 @@ export const deleteCart = async (req, res) => {
     const deletedCart = await cartsService.deleteCart(cid);
     res.status(200).json({ message: "Cart removed" });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    const customError = CustomError.createError(
+      ErrorMessages.DELETE_CART_ERROR
+    );
+    return res.status(customError.status).json(customError);
   }
 };
 
@@ -48,7 +58,10 @@ export const addProductToCart = async (req, res) => {
       .status(200)
       .json({ message: "Product added to cart", response: productInCart });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    const customError = CustomError.createError(
+      ErrorMessages.ADD_PRODUCT_TO_CART_ERROR
+    );
+    return res.status(customError.status).json(customError);
   }
 };
 
@@ -66,7 +79,10 @@ export const updateProductInCart = async (req, res) => {
       response: productUpdateInCart,
     });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    const customError = CustomError.createError(
+      ErrorMessages.UPDATE_PRODUCT_TO_CART_ERROR
+    );
+    return res.status(customError.status).json(customError);
   }
 };
 
@@ -81,7 +97,10 @@ export const deleteProductInCart = async (req, res) => {
       message: "Product removed from cart",
     });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    const customError = CustomError.createError(
+      ErrorMessages.DELETE_PRODUCT_FROM_CART_ERROR
+    );
+    return res.status(customError.status).json(customError);
   }
 };
 

@@ -1,11 +1,16 @@
 import { productsService } from "../services/products.service.js";
+import CustomError from "../errors/custom.error.js";
+import { ErrorMessages } from "../errors/errorNum.js";
 
 export const getProducts = async (req, res) => {
   try {
     const products = await productsService.findProducts();
     res.status(200).json({ message: "Products", response: products });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    const customError = CustomError.createError(
+      ErrorMessages.GET_PRODUCTS_ERROR
+    );
+    return res.status(customError.status).json(customError);
   }
 };
 
@@ -15,7 +20,10 @@ export const getProductById = async (req, res) => {
     const product = await productsService.findById(pid);
     res.status(200).json({ message: "Product By Id", response: product });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    const customError = CustomError.createError(
+      ErrorMessages.PRODUCT_NOT_FOUND
+    );
+    return res.status(customError.status).json(customError);
   }
 };
 
@@ -26,7 +34,10 @@ export const createProduct = async (req, res) => {
       .status(200)
       .json({ message: "New product created", response: newProduct });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    const customError = CustomError.createError(
+      ErrorMessages.CREATE_PRODUCT_ERROR
+    );
+    return res.status(customError.status).json(customError);
   }
 };
 
@@ -38,7 +49,10 @@ export const updateProduct = async (req, res) => {
       .status(200)
       .json({ message: "Product updated", response: updatedProduct });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    const customError = CustomError.createError(
+      ErrorMessages.UPDATE_PRODUCT_ERROR
+    );
+    return res.status(customError.status).json(customError);
   }
 };
 
@@ -48,6 +62,9 @@ export const deleteProduct = async (req, res) => {
     const deletedProduct = await productsService.deleteProduct(pid);
     res.status(200).json({ message: "Product removed" });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    const customError = CustomError.createError(
+      ErrorMessages.DELETE_PRODUCT_ERROR
+    );
+    return res.status(customError.status).json(customError);
   }
 };
