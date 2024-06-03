@@ -10,6 +10,7 @@ import config from "./config.js";
 import "./DAL/MongoDB/dbConfig.js";
 import "./config/passport.config.js";
 import { generate100FakerProducts } from "./mocks/products.mock.js";
+import { logger } from "./logger/winston.js";
 
 import { productsManagerMongo } from "./DAL/dao/MongoDao/products.dao.js";
 import { chatManagerMongo } from "./DAL/dao/MongoDao/chat.dao.js";
@@ -65,6 +66,17 @@ app.get("/api/mockingProducts", (req, res) => {
     fakerProducts.push(productMocking);
   }
   res.status(200).json({ fakerProducts });
+});
+
+//router test logger
+app.get("/api/loggerTest", (req, res) => {
+  logger.fatal("Fatal"),
+    logger.error("Error"),
+    logger.warning("Warning"),
+    logger.info("Info"),
+    logger.http("Http"),
+    logger.debug("Debug"),
+    res.send("Logger winston test");
 });
 
 const httpServer = app.listen(config.PORT, () => {

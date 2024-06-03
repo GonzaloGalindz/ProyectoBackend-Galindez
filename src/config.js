@@ -13,4 +13,5 @@ export default {
   CLIENT_SECRET_GITHUB: process.env.CLIENT_SECRET_GITHUB,
   GMAIL_USER: process.env.GMAIL_USER,
   GMAIL_PASSWORD: process.env.GMAIL_PASSWORD,
+  ENVIRONMENT: process.env.ENVIRONMENT,
 };
