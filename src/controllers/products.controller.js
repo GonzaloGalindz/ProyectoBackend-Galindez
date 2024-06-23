@@ -31,7 +31,7 @@ export const createProduct = async (req, res) => {
   try {
     const newProduct = await productsService.createProduct(req.body);
     res
-      .status(200)
+      .status(201)
       .json({ message: "New product created", response: newProduct });
   } catch (error) {
     const customError = CustomError.createError(

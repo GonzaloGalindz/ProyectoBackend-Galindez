@@ -5,10 +5,13 @@ import session from "express-session";
 import MongoStore from "connect-mongo";
 import passport from "passport";
 import { Server } from "socket.io";
+import swaggerJSDoc from "swagger-jsdoc";
+import swaggerUiExpress from "swagger-ui-express";
 import { __dirname } from "./utils.js";
 import config from "./config.js";
 import "./DAL/MongoDB/dbConfig.js";
 import "./config/passport.config.js";
+
 import { generate100FakerProducts } from "./mocks/products.mock.js";
 import { logger } from "./logger/winston.js";
 
@@ -26,6 +29,20 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(__dirname + "/public"));
+
+//documentation swagger
+const swaggerOptions = {
+  definition: {
+    openapi: "3.0.0",
+    info: {
+      title: "Documentation of the E-commerce Backend Project",
+      description: "API Rest E-commerce 53110",
+    },
+  },
+  apis: [`${__dirname}/docs/**/*.yaml`],
+};
+const specs = swaggerJSDoc(swaggerOptions);
+app.use("/api/docs", swaggerUiExpress.serve, swaggerUiExpress.setup(specs));
 
 //handlebars
 app.engine("handlebars", handlebars.engine());

@@ -8,7 +8,7 @@ export default class CustomError {
       };
     } else {
       return {
-        status: 500,
+        status: 400,
         errors: [error],
       };
     }

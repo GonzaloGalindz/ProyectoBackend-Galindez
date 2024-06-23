@@ -28,7 +28,7 @@ export const getCartById = async (req, res) => {
 export const createCart = async (req, res) => {
   try {
     const newCart = await cartsService.createCart();
-    res.status(200).json({ message: "New cart created", response: newCart });
+    res.status(201).json({ message: "New cart created", response: newCart });
   } catch (error) {
     const customError = CustomError.createError(
       ErrorMessages.CREATE_CART_ERROR
@@ -55,7 +55,7 @@ export const addProductToCart = async (req, res) => {
   try {
     const productInCart = await cartsService.addProductToCart(cid, pid);
     res
-      .status(200)
+      .status(202)
       .json({ message: "Product added to cart", response: productInCart });
   } catch (error) {
     const customError = CustomError.createError(
@@ -74,7 +74,7 @@ export const updateProductInCart = async (req, res) => {
       pid,
       newQuantity
     );
-    res.status(200).json({
+    res.status(202).json({
       message: "Update product in the cart",
       response: productUpdateInCart,
     });
@@ -93,7 +93,7 @@ export const deleteProductInCart = async (req, res) => {
       cid,
       pid
     );
-    res.status(200).json({
+    res.status(202).json({
       message: "Product removed from cart",
     });
   } catch (error) {
